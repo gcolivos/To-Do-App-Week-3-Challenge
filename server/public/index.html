@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="vendors/jquery.min.js" charset="utf-8"></script>
+    <script src="scripts/client.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <title>Weekend 3 Challenge: To Do!</title>
+</head>
+
+<body>
+    <H1>To Do List!</H1>
+    <div id="addTask">
+        <h2>Add Task</h2>
+        <label for="taskIn">Task?</label>
+        <input type="text" id="taskIn" value=""></br>
+        <label for="dateIn">Due Date?</label>
+        <input type="date" id="dateIn" value=""></br>
+        <label for="completedIn">Task Completed?</label>
+        <select id="completedIn">
+            <option value="N">No</option>
+            <option value="Y">Yes</option>
+        </select></br>
+        <button type="button" id="addButton">Add Task</button>
+    </div>
+    <div>
+        <h2>Things To Do</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Completed?</th>
+                    <!-- Note: Change this to status once I get going -->
+                </tr>
+            </thead>
+            <tbody id="viewTasks">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

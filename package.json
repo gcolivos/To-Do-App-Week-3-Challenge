@@ -1,0 +1,27 @@
+{
+  "name": "To-Do-App-Week-3-Challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gcolivos/To-Do-App-Week-3-Challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gcolivos/To-Do-App-Week-3-Challenge/issues"
+  },
+  "homepage": "https://github.com/gcolivos/To-Do-App-Week-3-Challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jquery": "^3.2.1",
+    "pg": "^7.4.0"
+  }
+}
