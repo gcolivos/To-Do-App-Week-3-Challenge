@@ -30,5 +30,33 @@ router.post('/', function (req, res) {
         }
     });
 });;
+Stopping Point
+// router.get('/', function (req, res) {
+//     //attempt to connect to database
+//     console.log("In get koala thing");
+//     pool.connect(function (errorConnectingToDatabase, client, done) {
+//         if (errorConnectingToDatabase) {
+//             //there was an error connecting to the database
+//             console.log('Error connecting to database', errorConnectingToDatabase);
+//             res.sendStatus(500);
+//         }
+//         else {
+//             //We connected to the database!!
+//             //Now we are going to GET things from the DB
+//             console.log("got through pool to the else statement");
+//             client.query('SELECT * FROM koala;', function (errorMakingQuery, result) {
+//                 done();
+//                 if (errorMakingQuery) {
+//                     //query failed. Did you test it in Postico?
+//                     console.log('Error making query', errorMakingQuery);
+//                     res.sendStatus(500);
+//                 } else {
+//                     res.send(result.rows);
+//                 }
+//             });
+  
+//         }
+//     });
+//   });
 
 module.exports = router
