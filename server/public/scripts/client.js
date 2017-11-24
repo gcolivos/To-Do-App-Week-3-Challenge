@@ -21,21 +21,22 @@ function addNewTask() {
 function saveTask(newTask) {
     console.log('in saveTask', newTask);
     // ajax call to server to put in new task
-    $.ajax({
-        method: 'POST',
-        url: '/tasks',
-        data: newTask,
-        success: function (data) {
-            console.log('saved a task: ', data);
-            getTasks();
-            // getTasks();
-        } // end success
-    }); //end ajax
+    setTimeout(function () {
+        $.ajax({
+            method: 'POST',
+            url: '/tasks',
+            data: newTask,
+            success: function (data) {
+                console.log('saved a task: ', data);
+                getTasks();
+            } // end success
+        }), //end ajax
+            2000
+    }); //end timeout
 }
 
 function getTasks() {
     console.log('in getTasks');
-    // ajax call to server to get koalas
     $.ajax({
         url: '/tasks',
         type: 'GET',
@@ -56,7 +57,7 @@ function getTasks() {
                     $newTask.append($markCompletedButton);
                     $newTask.addClass('incomplete')
                 }
-                else{
+                else {
                     $newTask.addClass('complete')
                 }
                 $('#viewTasks').append($newTask);
@@ -69,15 +70,26 @@ function getTasks() {
 }
 
 function removeTask(e, complete) {
-    var taskIdToRemove = $(this).data().id;
-    console.log('Remove task was clicked! The task id was', taskIdToRemove);
-    $.ajax({
-        method: 'DELETE',
-        url: '/tasks/' + taskIdToRemove,
-        success: function (response) {
-            getTasks();
-        }
-    })
+    if (confirm("Are you sure you want to delete this task?") == false) {
+        return false
+    } else {
+        var taskIdToRemove = $(this).data().id;
+        // Adding temporary class to the row to be deleted for animation to come
+        $(this).closest('tr').addClass('aboutToDelete');
+        console.log('Remove task was clicked! The task id was', taskIdToRemove);
+        // animation effect total time=2000ms
+        $('.aboutToDelete').animate({ backgroundColor: 'black' }, 1000).fadeOut(1000)
+        setTimeout(function () {
+            $.ajax({
+                method: 'DELETE',
+                url: '/tasks/' + taskIdToRemove,
+                success: function (response) {
+                    getTasks();
+                }
+            })
+            //ajax function in setTimeout, on delay of 2000ms, equal to animation length
+        }, 2000);
+    }
 }
 
 function completeTask(e, complete) {
