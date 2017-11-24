@@ -48,17 +48,17 @@ function getTasks() {
                 //downloaded moment.js as a script for date conversion on DOM
                 cleanDate = moment(data[i].due_date).format("MMM Do YYYY")
                 var $newTask = $("<tr class='complete'><td>" + data[i].task + "</td><td>" + cleanDate + "</td><td>" + data[i].completed + "</td></tr>")
-                var $deleteTaskButton = $('<button class="deleteButton">Delete</button>')
+                var $deleteTaskButton = $('<button class="deleteButton btn btn-danger">Delete</button>')
                 $deleteTaskButton.data('id', task.id);
                 $newTask.append($deleteTaskButton);
                 if (data[i].completed == "N") {
-                    var $markCompletedButton = $('<button class="completeButton">Mark Completed?</button>')
+                    var $markCompletedButton = $('<button class="completeButton btn btn-success">Mark Completed?</button>')
                     $markCompletedButton.data('id', task.id);
                     $newTask.append($markCompletedButton);
-                    $newTask.addClass('incomplete')
+                    $newTask.addClass('danger')
                 }
                 else {
-                    $newTask.addClass('complete')
+                    $newTask.addClass('success')
                 }
                 $('#viewTasks').append($newTask);
             }
@@ -77,8 +77,8 @@ function removeTask(e, complete) {
         // Adding temporary class to the row to be deleted for animation to come
         $(this).closest('tr').addClass('aboutToDelete');
         console.log('Remove task was clicked! The task id was', taskIdToRemove);
-        // animation effect total time=2000ms
-        $('.aboutToDelete').animate({ backgroundColor: 'black' }, 1000).fadeOut(1000)
+        // animation effect total time=1000ms
+        $('.aboutToDelete').fadeOut(1000)
         setTimeout(function () {
             $.ajax({
                 method: 'DELETE',
@@ -87,8 +87,8 @@ function removeTask(e, complete) {
                     getTasks();
                 }
             })
-            //ajax function in setTimeout, on delay of 2000ms, equal to animation length
-        }, 2000);
+            //ajax function in setTimeout, on delay of 1000ms, equal to animation length
+        }, 1000);
     }
 }
 
