@@ -46,7 +46,7 @@ function getTasks() {
                 var task = data[i];
                 //downloaded moment.js as a script for date conversion on DOM
                 cleanDate = moment(data[i].due_date).format("MMM Do YYYY")
-                var $newTask = $("<tr><td>" + data[i].task + "</td><td>" + cleanDate + "</td><td>" + data[i].completed + "</td></tr>")
+                var $newTask = $("<tr class='complete'><td>" + data[i].task + "</td><td>" + cleanDate + "</td><td>" + data[i].completed + "</td></tr>")
                 var $deleteTaskButton = $('<button class="deleteButton">Delete</button>')
                 $deleteTaskButton.data('id', task.id);
                 $newTask.append($deleteTaskButton);
@@ -54,6 +54,10 @@ function getTasks() {
                     var $markCompletedButton = $('<button class="completeButton">Mark Completed?</button>')
                     $markCompletedButton.data('id', task.id);
                     $newTask.append($markCompletedButton);
+                    $newTask.addClass('incomplete')
+                }
+                else{
+                    $newTask.addClass('complete')
                 }
                 $('#viewTasks').append($newTask);
             }
