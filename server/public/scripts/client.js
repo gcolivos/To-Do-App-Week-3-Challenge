@@ -16,6 +16,8 @@ function addNewTask() {
         completed: $('#completedIn').val(),
     };
     saveTask(objectToSend);
+    //global variable addedTaskId will be 0 going into the table update if a task is added
+    addedTaskId = 0;
 };
 
 function saveTask(newTask) {
@@ -35,6 +37,8 @@ function saveTask(newTask) {
     }); //end timeout
 }
 
+var highestId = 0;
+
 function getTasks() {
     console.log('in getTasks');
     $.ajax({
@@ -43,6 +47,12 @@ function getTasks() {
         success: function (data) {
             console.log('got some tasks: ', data);
             $('#viewTasks').empty()
+            for (i = 0; i < data.length; i++) {
+                if (data[i].id > highestId) {
+                    highestId = data[i].id;
+                }
+            }
+            // now highestId variable is equal to the data.id of the most recently added row
             for (i = 0; i < data.length; i++) {
                 var task = data[i];
                 //downloaded moment.js as a script for date conversion on DOM
@@ -60,8 +70,13 @@ function getTasks() {
                 else {
                     $newTask.addClass('success')
                 }
+                if (data[i].id == highestId) {
+                    $newTask.addClass('rowJustAdded');
+                    console.log("added rowJustAdded class to " + data[i].id)
+                };
                 $('#viewTasks').append($newTask);
             }
+            // $('.rowJustAdded').animate({ backgroundColor: 'black' }, 1000).fadeOut(1000)
             $('#taskIn').val("");
             $('#dateIn').val("");
             $('#completedIn').val("");
