@@ -12,24 +12,25 @@ $(document).ready(function () {
 });
 
 function addNewTask() {
-    taskDate = new Date($('#dateIn').val())
-    todayDate = new Date();
-    if (taskDate < todayDate) {
-        if (!confirm("You entered a due date in the past. Do you wish to still proceed?")){
-            return false;
+    if (checkFields()) {
+        taskDate = new Date($('#dateIn').val())
+        todayDate = new Date();
+        if (taskDate < todayDate) {
+            if (!confirm("You entered a due date in the past. Do you wish to still proceed?")) {
+                return false;
+            }
         }
-    }
-    console.log('in addButton on click');
-    var objectToSend = {
-        task: $('#taskIn').val(),
-        due_date: $('#dateIn').val(),
-        completed: $('#completedIn').val(),
+        console.log('in addButton on click');
+        var objectToSend = {
+            task: $('#taskIn').val(),
+            due_date: $('#dateIn').val(),
+            completed: $('#completedIn').val(),
+        };
+        saveTask(objectToSend);
+        //global variable addedTaskId will be 0 going into the table update if a task is added
+        addedTaskId = 0;
     };
-    saveTask(objectToSend);
-    //global variable addedTaskId will be 0 going into the table update if a task is added
-    addedTaskId = 0;
-};
-
+}
 function saveTask(newTask) {
     console.log('in saveTask', newTask);
     // ajax call to server to put in new task
@@ -57,6 +58,8 @@ function getTasks() {
         success: function (data) {
             console.log('got some tasks: ', data);
             $('#viewTasks').empty()
+            $('#overdueBoxDiv').empty()
+            var overdueItems = 0;
             for (i = 0; i < data.length; i++) {
                 if (data[i].id > highestId) {
                     highestId = data[i].id;
@@ -77,7 +80,7 @@ function getTasks() {
                     $markCompletedButton.data('id', task.id);
                     $newTask.append("<td></td>");
                     $newTask.find('td').last().append($markCompletedButton);
-                    $newTask.addClass('danger')
+                    $newTask.addClass('warning')
                 }
                 else {
                     $newTask.append("<td></td>");
@@ -88,8 +91,18 @@ function getTasks() {
                     $newTask.addClass('rowJustAdded');
                     console.log("added rowJustAdded class to " + data[i].id)
                 };
+                //below code checks if task is overdue and incomplete
+                taskDate = new Date(data[i].due_date);
+                todayDate = new Date();
+                if (taskDate < todayDate && data[i].completed == "N") {
+                    $newTask.removeClass('warning');
+                    $newTask.addClass('overdue text-uppercase danger');
+                    overdueItems += 1;
+                }
+                //add task to table
                 $('#viewTasks').append($newTask);
             }
+            $('#overdueBoxDiv').append("<H2>You have " + overdueItems + " overdue tasks that require attention!</H2>");
             // Conditional to make sure on first load or delete that the highestId animation doesn't run
             if (!noAnimateOnLoad) {
                 $('.rowJustAdded').fadeOut(1000).fadeIn(1000)

@@ -21,18 +21,20 @@
 </head>
 
 <body>
-    <H1>To Do List!</H1>
-    <div id="addTask">
+    <H1>To Do</H1>
+    <div class="container" id="overdueBoxDiv">
+    </div>
+    <div id="addTask" class="container-fluid form-inline">
         <h2>Add Task</h2>
         <label for="taskIn">Task?</label>
-        <input type="text" id="taskIn" value=""></br>
+        <input type="text" id="taskIn" value="" style="width:300px;">
         <label for="dateIn">Due Date?</label>
-        <input type="date" id="dateIn" value=""></br>
+        <input type="date" id="dateIn" value="">
         <label for="completedIn"> Task complete?</label>
         <select id="completedIn">
             <option value="N">No</option>
             <option value="Y">Yes</option>
-        </select></br>
+        </select>
         <button type="button" id="addButton">Add Task</button>
     </div>
     <div class="container">
@@ -45,7 +47,6 @@
                     <th>Completed?</th>
                     <th>Delete?</th>
                     <th>Mark Completed?</th>
-                    <!-- Note: Change this to status once I get going -->
                 </tr>
             </thead>
             <tbody id="viewTasks">

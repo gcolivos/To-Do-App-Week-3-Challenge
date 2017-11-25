@@ -1,12 +1,44 @@
-/* body {
+body {
     animation: pulse 5s infinite;
   }
   
-  @keyframes pulse {
+@keyframes pulse {
     0% {
-      background-color: rgb(12, 0, 63);
+      background-color: rgb(236, 214, 88);
+    }
+    50% {
+      background-color: rgb(255, 128, 54);
     }
     100% {
-      background-color: rgb(255, 54, 222);
+      background-color: rgb(236, 214, 88);
     }
-  } */
+  }
+
+h1 { color: #111; 
+    font-family: 'Helvetica Neue', sans-serif; 
+    font-size: 275px; 
+    font-weight: bold; 
+    letter-spacing: -1px; 
+    line-height: 1; 
+    text-align: center; 
+  }
+
+.overdue {
+      font-weight: bold;
+      color: red;
+      background-color: black !important;
+    }
+
+#overdueBoxDiv {
+  position: relative;
+  float: right;
+  display: flex;
+  width: 350px;
+  height: flex;
+  margin: 4px;
+  border: 7px ridge rgb(180, 29, 12);
+  text-align: center;
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center;
+}
