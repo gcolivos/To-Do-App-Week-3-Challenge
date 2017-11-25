@@ -1,24 +1,39 @@
 console.log('js');
+var noAnimateOnLoad = true;
 
 $(document).ready(function () {
     console.log('JQ');
+    console.log("Moment is working, moment right now is " + moment());
     getTasks();
+    $('#completedIn').val("N");
     $('#addButton').on('click', addNewTask);
     $('#viewTasks').on('click', '.deleteButton', removeTask);
     $('#viewTasks').on('click', '.completeButton', completeTask);
 });
 
 function addNewTask() {
-    console.log('in addButton on click');
-    var objectToSend = {
-        task: $('#taskIn').val(),
-        due_date: $('#dateIn').val(),
-        completed: $('#completedIn').val(),
+    // console.log(Number(new Date()));
+    // console.log(Number($('#dateIn').val()));
+    // console.log(now);
+    if (checkFields()) {
+        // } else if (($('#dateIn').val()) < moment()) {
+        //     if (confirm("You entered a due date in the past. Do you wish to still proceed?") == false) {
+        //         return false
+        //     };
+        // } 
+        console.log('in addButton on click');
+        var now = new Date();
+        console.log(now);
+        var objectToSend = {
+            task: $('#taskIn').val(),
+            due_date: $('#dateIn').val(),
+            completed: $('#completedIn').val(),
+        };
+        saveTask(objectToSend);
+        //global variable addedTaskId will be 0 going into the table update if a task is added
+        addedTaskId = 0;
     };
-    saveTask(objectToSend);
-    //global variable addedTaskId will be 0 going into the table update if a task is added
-    addedTaskId = 0;
-};
+}
 
 function saveTask(newTask) {
     console.log('in saveTask', newTask);
@@ -37,7 +52,7 @@ function saveTask(newTask) {
     }); //end timeout
 }
 
-var highestId = 0;
+var highestId = 0; //global variable for looking up most recently added row
 
 function getTasks() {
     console.log('in getTasks');
@@ -60,26 +75,39 @@ function getTasks() {
                 var $newTask = $("<tr class='complete'><td>" + data[i].task + "</td><td>" + cleanDate + "</td><td>" + data[i].completed + "</td></tr>")
                 var $deleteTaskButton = $('<button class="deleteButton btn btn-danger">Delete</button>')
                 $deleteTaskButton.data('id', task.id);
-                $newTask.append($deleteTaskButton);
+                $newTask.append("<td></td>");
+                $newTask.find('td').last().append($deleteTaskButton);
                 if (data[i].completed == "N") {
                     var $markCompletedButton = $('<button class="completeButton btn btn-success">Mark Completed?</button>')
                     $markCompletedButton.data('id', task.id);
-                    $newTask.append($markCompletedButton);
+                    $newTask.append("<td></td>");
+                    $newTask.find('td').last().append($markCompletedButton);
                     $newTask.addClass('danger')
                 }
                 else {
-                    $newTask.addClass('success')
+                    $newTask.append("<td></td>");
+                    $newTask.addClass('success');
                 }
+                //below conditional is to add the animation to the newest item added
                 if (data[i].id == highestId) {
                     $newTask.addClass('rowJustAdded');
                     console.log("added rowJustAdded class to " + data[i].id)
                 };
                 $('#viewTasks').append($newTask);
             }
-            // $('.rowJustAdded').animate({ backgroundColor: 'black' }, 1000).fadeOut(1000)
+            // Conditional to make sure on first load or delete that the highestId animation doesn't run
+            if (!noAnimateOnLoad) {
+                $('.rowJustAdded').fadeOut(1000).fadeIn(1000)
+                $("table").removeClass('rowJustAdded');
+            }
+            else {
+                noAnimateOnLoad = false; //so that now the newest item will be animated on table refresh, UNLESS this
+                //boolean switches back to true (as it does at the start of the remove task function)
+            }
             $('#taskIn').val("");
             $('#dateIn').val("");
-            $('#completedIn').val("");
+            $('#completedIn').val("N");
+
         } // end success
     }); //end ajax
 }
@@ -88,6 +116,7 @@ function removeTask(e, complete) {
     if (confirm("Are you sure you want to delete this task?") == false) {
         return false
     } else {
+        noAnimateOnLoad = true;
         var taskIdToRemove = $(this).data().id;
         // Adding temporary class to the row to be deleted for animation to come
         $(this).closest('tr').addClass('aboutToDelete');
@@ -117,4 +146,13 @@ function completeTask(e, complete) {
             getTasks();
         }
     })
+}
+
+function checkFields() {
+    if (($('#taskIn').val() === "" || $('#dateIn').val() === "" || $('#completedIn').val() === "")) {
+        alert("Please fill out all fields completely!")
+        return false;
+    } else {
+        return true;
+    }
 }
