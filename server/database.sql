@@ -6,4 +6,4 @@ CREATE TABLE tasks(
 	);
 	
 SELECT * from tasks
-
+ORDER BY completed ASC, due_date ASC;

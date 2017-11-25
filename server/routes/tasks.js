@@ -33,7 +33,7 @@ router.get('/', function (req, res) {
         }
         else {
             console.log("got through pool to the else statement");
-            client.query('SELECT * FROM tasks ORDER BY due_date ASC;', function (errorMakingQuery, result) {
+            client.query('SELECT * from tasks ORDER BY completed ASC, due_date ASC;', function (errorMakingQuery, result) {
                 done();
                 if (errorMakingQuery) {
                     console.log('Error making query', errorMakingQuery);
