@@ -12,28 +12,23 @@ $(document).ready(function () {
 });
 
 function addNewTask() {
-    // console.log(Number(new Date()));
-    // console.log(Number($('#dateIn').val()));
-    // console.log(now);
-    if (checkFields()) {
-        // } else if (($('#dateIn').val()) < moment()) {
-        //     if (confirm("You entered a due date in the past. Do you wish to still proceed?") == false) {
-        //         return false
-        //     };
-        // } 
-        console.log('in addButton on click');
-        var now = new Date();
-        console.log(now);
-        var objectToSend = {
-            task: $('#taskIn').val(),
-            due_date: $('#dateIn').val(),
-            completed: $('#completedIn').val(),
-        };
-        saveTask(objectToSend);
-        //global variable addedTaskId will be 0 going into the table update if a task is added
-        addedTaskId = 0;
+    taskDate = new Date($('#dateIn').val())
+    todayDate = new Date();
+    if (taskDate < todayDate) {
+        if (!confirm("You entered a due date in the past. Do you wish to still proceed?")){
+            return false;
+        }
+    }
+    console.log('in addButton on click');
+    var objectToSend = {
+        task: $('#taskIn').val(),
+        due_date: $('#dateIn').val(),
+        completed: $('#completedIn').val(),
     };
-}
+    saveTask(objectToSend);
+    //global variable addedTaskId will be 0 going into the table update if a task is added
+    addedTaskId = 0;
+};
 
 function saveTask(newTask) {
     console.log('in saveTask', newTask);
