@@ -102,7 +102,11 @@ function getTasks() {
                 //add task to table
                 $('#viewTasks').append($newTask);
             }
-            $('#overdueBoxDiv').append("<H2>You have " + overdueItems + " overdue tasks that require attention!</H2>");
+            if (overdueItems > 0) {
+                $('#overdueBoxDiv').append("<H2>You have " + overdueItems + " overdue tasks that require attention!</H2>")
+            } else {
+                $('#overdueBoxDiv').append("<H2>All caught up!</H2>")
+            }
             // Conditional to make sure on first load or delete that the highestId animation doesn't run
             if (!noAnimateOnLoad) {
                 $('.rowJustAdded').fadeOut(1000).fadeIn(1000)
@@ -146,14 +150,21 @@ function removeTask(e, complete) {
 
 function completeTask(e, complete) {
     var taskIdToComplete = $(this).data().id;
+    // Adding temporary class to the row to be deleted for animation to come
+    $(this).closest('tr').addClass('aboutToComplete');
     console.log('Complete task was clicked! The task id was', taskIdToComplete);
-    $.ajax({
-        method: 'PUT',
-        url: '/tasks/' + taskIdToComplete,
-        success: function (response) {
-            getTasks();
-        }
-    })
+    // animation effect total time=1000ms
+    $('.aboutToComplete').fadeOut(1000)
+    setTimeout(function () {
+        $.ajax({
+            method: 'PUT',
+            url: '/tasks/' + taskIdToComplete,
+            success: function (response) {
+                noAnimateOnLoad = true;
+                getTasks();
+            }
+        })
+    }, 1000);
 }
 
 function checkFields() {
